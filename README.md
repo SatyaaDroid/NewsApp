@@ -17,9 +17,11 @@ and WebView for displaying web content.
 
 - Kotlin
 - MVVM Architecture
+- Retrofit
 - Hilt Dependency Injection
 - Paging Library
 - Room Database
+- coil
 - WebView
 
 Look of the app:
