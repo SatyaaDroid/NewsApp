@@ -11,6 +11,7 @@ and WebView for displaying web content.
 - Search for specific news topics
 - Save favorite articles for later viewing
 - Seamless navigation between different news categories
+- also support dark and light theme
 
 ## Technologies Used
 
