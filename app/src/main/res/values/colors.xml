@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="seed">#984061</color>
+    <color name="md_theme_light_primary">#984061</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#FFD9E2</color>
+    <color name="md_theme_light_onPrimaryContainer">#3E001D</color>
+    <color name="md_theme_light_secondary">#74565F</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FFD9E2</color>
+    <color name="md_theme_light_onSecondaryContainer">#2B151C</color>
+
+    <color name="md_theme_dark_primary">#FFB0C8</color>
+    <color name="md_theme_dark_onPrimary">#5E1133</color>
+    <color name="md_theme_dark_primaryContainer">#7B2949</color>
+    <color name="md_theme_dark_onPrimaryContainer">#FFD9E2</color>
+    <color name="md_theme_dark_secondary">#E2BDC6</color>
+    <color name="md_theme_dark_onSecondary">#422931</color>
+    <color name="md_theme_dark_secondaryContainer">#5A3F47</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFD9E2</color>
+
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="titleTextColor">#131214</color>
+    <color name="subTitleTextColor">#333233</color>
+    <color name="bgLineColor">#EADBFF</color>
+    <color name="background">#dddddd</color>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/TopHeadDestination">
+
+    <fragment
+        android:id="@+id/TopHeadDestination"
+        android:name="com.app.news.fragments.TopHeadlineFragment"
+        android:label="@string/headlines"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeDestination_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchDestination"
+        android:name="com.app.news.fragments.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchDestination_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookMarksDestination"
+        android:name="com.app.news.fragments.BookMarksFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/fragment_book_marks">
+        <action
+            android:id="@+id/action_bookMarksDestination_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.app.news.fragments.WebViewFragment"
+        android:label="WebView"
+        tools:layout="@layout/fragment_web_view">
+
+        <argument
+            android:name="content_url"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+</navigation>

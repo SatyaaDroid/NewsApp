@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">News</string>
+    <!--    Fragment Name-->
+    <string name="headlines">Top Headlines</string>
+    <string name="search">Search</string>
+    <string name="bookmark">BookMarks</string>
+    <!--    Fragment Name -->
+
+    <!--    Message Dialog-->
+    <string name="something_went_wrong_please_try_again">Something went wrong..</string>
+    <string name="retry">Retry</string>
+    <!--    Message Dialog-->
+
+    <!-- Option Menu -->
+    <string name="relevance">Relevance</string>
+    <string name="popularity">Popularity</string>
+    <string name="recently_uploaded">Recently Uploaded</string>
+    <string name="save_article">Save Article</string>
+    <string name="remove_article">Remove Article</string>
+    <!-- Option Menu -->
+
+
+</resources>
