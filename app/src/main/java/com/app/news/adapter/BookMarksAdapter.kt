@@ -14,13 +14,10 @@ import com.app.news.databinding.ArticleItemsBinding
 import com.app.news.db.NewsLocalModel
 import com.app.news.utils.Util
 
-class BookMarksAdapter(private val listener: ButtonClickListener) :
-    ListAdapter<NewsLocalModel, BookMarksAdapter.ViewHolder>(NewsLocalModelDiffCallback()) {
-
-    interface ButtonClickListener {
-        fun onCardClicked(url: NewsLocalModel)
-        fun onRemoveButton(newsItem: NewsLocalModel)
-    }
+class BookMarksAdapter(
+    private val onCardClicked: (url:NewsLocalModel) ->Unit,
+    private val onRemoveButton: (url:NewsLocalModel) ->Unit,
+) : ListAdapter<NewsLocalModel, BookMarksAdapter.ViewHolder>(NewsLocalModelDiffCallback()) {
 
     inner class ViewHolder(private val binding: ArticleItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -28,12 +25,13 @@ class BookMarksAdapter(private val listener: ButtonClickListener) :
             binding.root.setOnClickListener {
                 val position = absoluteAdapterPosition
                 val newsItem = getItem(position)
-                newsItem?.url?.let { it1 -> listener.onCardClicked(newsItem) }
+                newsItem?.url?.let {
+                    onCardClicked(newsItem) }
             }
             binding.ivSave.setOnClickListener {
                 val position = absoluteAdapterPosition
                 val newsItem = getItem(position)
-                listener.onRemoveButton(newsItem)
+                onRemoveButton(newsItem)
             }
         }
 

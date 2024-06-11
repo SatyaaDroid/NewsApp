@@ -39,12 +39,11 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment(), NewsAdapter.OnClickListener {
+class SearchFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private val newsViewModel: NewsViewModel by viewModels()
 
-    @Inject
     lateinit var newsAdapter: NewsAdapter
     private lateinit var searchView: SearchView
 
@@ -146,7 +145,17 @@ class SearchFragment : BaseFragment(), NewsAdapter.OnClickListener {
 
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        newsAdapter.listener = this
+        newsAdapter = NewsAdapter(
+            onCardClick = this::handleOnCardClick,
+            onSaveButton = this::handleOnSaveButton,
+            onShareButton = this::handleOnShareButton
+        )
+
+
+        binding.rvNewsSearch.apply {
+            binding.rvNewsSearch.layoutManager = LinearLayoutManager(requireContext())
+            adapter = newsAdapter
+        }
 
         newsAdapter.addLoadStateListener { combinedLoadStates ->
             binding.apply {
@@ -166,10 +175,6 @@ class SearchFragment : BaseFragment(), NewsAdapter.OnClickListener {
             }
         }
 
-        binding.rvNewsSearch.apply {
-            binding.rvNewsSearch.layoutManager = LinearLayoutManager(requireContext())
-            adapter = newsAdapter
-        }
 
         newsViewModel.isDataLoading.observe(viewLifecycleOwner) { isLoading ->
             if (isLoading) {
@@ -200,19 +205,19 @@ class SearchFragment : BaseFragment(), NewsAdapter.OnClickListener {
         return binding.root
     }
 
-    override fun onCardClick(url: String) {
+
+    private fun handleOnCardClick(url:String){
         val bundle = bundleOf("Url_key" to url)
         findNavController().navigate(R.id.action_searchDestination_to_webViewFragment, bundle)
     }
 
-    override fun onSaveButton(newsItem: ArticlesItem) {
+    private fun handleOnSaveButton(newsItem: ArticlesItem) {
         newsViewModel.changeStatus(newsItem)
         view?.rootView?.let {
             SnackbarUtils.showSnackbarShort(it, getString(R.string.save_article))
         }
     }
-
-    override fun onShareButton(newsItem: ArticlesItem) {
+    private fun handleOnShareButton(newsItem: ArticlesItem) {
         Util.shareNews(requireContext(), newsItem.title, newsItem.urlToImage)
     }
 

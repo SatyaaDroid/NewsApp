@@ -77,25 +77,10 @@ class BookMarksFragment : Fragment() {
 
     private fun initialization() {
 
-        bookMarksAdapter = BookMarksAdapter(object : BookMarksAdapter.ButtonClickListener {
-            override fun onCardClicked(it1: NewsLocalModel) {
-                val bundle = bundleOf("Url_key" to it1.url)
-                findNavController().navigate(
-                    R.id.action_bookMarksDestination_to_webViewFragment,
-                    bundle
-                )
-            }
-
-            override fun onRemoveButton(newsItem: NewsLocalModel) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    newsViewModel.removeSavedNews(newsItem)
-                    view?.rootView?.let {
-                        SnackbarUtils.showSnackbarLong(it, getString(R.string.remove_article))
-                    }
-                }
-            }
-
-        })
+        bookMarksAdapter = BookMarksAdapter(
+            onCardClicked =  this::handleOnCardButton,
+            onRemoveButton = this::handleOnRemoveButton
+        )
 
         binding.rvBookArticles.apply {
             layoutManager = LinearLayoutManager(requireActivity())
@@ -118,6 +103,23 @@ class BookMarksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    private fun handleOnCardButton(data :NewsLocalModel){
+        val bundle = bundleOf("Url_key" to data.url)
+        findNavController().navigate(
+            R.id.action_bookMarksDestination_to_webViewFragment,
+            bundle
+        )
+    }
+
+    private fun handleOnRemoveButton(data: NewsLocalModel){
+        viewLifecycleOwner.lifecycleScope.launch {
+            newsViewModel.removeSavedNews(data)
+            view?.rootView?.let {
+                SnackbarUtils.showSnackbarLong(it, getString(R.string.remove_article))
+            }
+        }
     }
 
 

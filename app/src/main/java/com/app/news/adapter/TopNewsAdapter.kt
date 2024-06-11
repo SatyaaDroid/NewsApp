@@ -14,16 +14,12 @@ import com.app.news.domain.model.ArticlesItem
 import com.app.news.utils.Util
 import javax.inject.Inject
 
-class TopNewsAdapter @Inject constructor() :
-    PagingDataAdapter<ArticlesItem, TopNewsAdapter.NewsViewHolder>(differCallback) {
+class TopNewsAdapter (
+    private val onCardClick: (url: String) -> Unit,
+    private val onSaveButton: (newsItem: ArticlesItem) -> Unit,
+    private val onShareButton: (newsItem: ArticlesItem) -> Unit,
+) : PagingDataAdapter<ArticlesItem, TopNewsAdapter.NewsViewHolder>(differCallback) {
 
-    var listener: OnClickListener? = null
-
-    interface OnClickListener {
-        fun onCardClick(url: String)
-        fun onSaveButton(newsItem: ArticlesItem)
-        fun onShareButton(newsItem: ArticlesItem)
-    }
 
     companion object {
         private val differCallback = object : DiffUtil.ItemCallback<ArticlesItem>() {
@@ -62,7 +58,7 @@ class TopNewsAdapter @Inject constructor() :
                     val newsItem = getItem(position)
                     if (newsItem != null) {
                         newsItem.url?.let { it1 ->
-                            listener?.onCardClick(it1)
+                            onCardClick(it1)
 //                            openNewsArticleInChrome(it1, itemView.context)
                         }
                     }
@@ -72,7 +68,7 @@ class TopNewsAdapter @Inject constructor() :
                     val position = absoluteAdapterPosition
                     val newsItem = getItem(position)
                     if (newsItem != null) {
-                        listener?.onSaveButton(newsItem)
+                        onSaveButton(newsItem)
                         ivSave.setImageResource(R.drawable.ic_saved)
                     }
                 }
@@ -81,8 +77,7 @@ class TopNewsAdapter @Inject constructor() :
                     val position = absoluteAdapterPosition
                     val newsItem = getItem(position)
                     if (newsItem != null) {
-                        listener?.onShareButton(newsItem)
-
+                        onShareButton(newsItem)
                     }
 
                 }

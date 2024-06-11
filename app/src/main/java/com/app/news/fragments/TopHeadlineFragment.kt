@@ -18,6 +18,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.news.R
+import com.app.news.adapter.NewsAdapter
 import com.app.news.adapter.TopNewsAdapter
 import com.app.news.databinding.FragmentHomeBinding
 import com.app.news.domain.model.ArticlesItem
@@ -32,14 +33,13 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class TopHeadlineFragment : BaseFragment(), TopNewsAdapter.OnClickListener {
+class TopHeadlineFragment : BaseFragment() {
 
     private lateinit var _binding: FragmentHomeBinding
 
     private val newsViewModel: NewsViewModel by viewModels()
 
-    @Inject
-    lateinit var newsAdapter: TopNewsAdapter
+    private lateinit var newsAdapter: TopNewsAdapter
 
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -67,8 +67,16 @@ class TopHeadlineFragment : BaseFragment(), TopNewsAdapter.OnClickListener {
             }
         })
 
+        newsAdapter = TopNewsAdapter(
+            onCardClick = this::handleOnCardClick,
+            onSaveButton = this::handleOnSaveButton,
+            onShareButton = this::handleOnShareButton
+        )
 
-        newsAdapter.listener = this
+        _binding.rvArticles.apply {
+            _binding.rvArticles.layoutManager = LinearLayoutManager(requireContext())
+            adapter = newsAdapter
+        }
 
         newsAdapter.addLoadStateListener { combinedLoadStates ->
             _binding.apply {
@@ -103,11 +111,6 @@ class TopHeadlineFragment : BaseFragment(), TopNewsAdapter.OnClickListener {
             }
         }
 
-
-        _binding.rvArticles.apply {
-            _binding.rvArticles.layoutManager = LinearLayoutManager(requireContext())
-            adapter = newsAdapter
-        }
 
         newsViewModel.isDataLoading.observe(viewLifecycleOwner) { isLoading ->
             if (isLoading) {
@@ -145,22 +148,21 @@ class TopHeadlineFragment : BaseFragment(), TopNewsAdapter.OnClickListener {
 
 
     // Implement the interface methods
-    override fun onCardClick(url: String) {
+    private fun handleOnCardClick(url: String) {
         // Handle card click event
         val bundle = bundleOf("Url_key" to url) // Rep
         findNavController().navigate(R.id.action_homeDestination_to_webViewFragment, bundle)
     }
 
-    override fun onSaveButton(newsItem: ArticlesItem) {
+    private fun handleOnSaveButton(newsItem: ArticlesItem) {
         newsViewModel.changeStatus(newsItem)
         view?.rootView?.let {
             SnackbarUtils.showSnackbarShort(it, getString(R.string.save_article))
         }
     }
 
-    override fun onShareButton(newsItem: ArticlesItem) {
+    private fun handleOnShareButton(newsItem: ArticlesItem) {
         Util.shareNews(requireContext(), newsItem.title, newsItem.urlToImage)
-
     }
 
 

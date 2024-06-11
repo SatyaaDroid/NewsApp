@@ -14,16 +14,12 @@ import com.app.news.domain.model.ArticlesItem
 import com.app.news.utils.Util
 import javax.inject.Inject
 
-class NewsAdapter @Inject constructor() :
-    PagingDataAdapter<ArticlesItem, NewsAdapter.NewsViewHolder>(differCallback) {
+class NewsAdapter(
+    private val onCardClick:(url:String) -> Unit,
+    private val onSaveButton:(newsItem:ArticlesItem) -> Unit,
+    private val onShareButton:(newsItem:ArticlesItem) -> Unit
+) : PagingDataAdapter<ArticlesItem, NewsAdapter.NewsViewHolder>(differCallback) {
 
-    var listener: OnClickListener? = null
-
-    interface OnClickListener {
-        fun onCardClick(url: String)
-        fun onSaveButton(newsItem: ArticlesItem)
-        fun onShareButton(newsItem: ArticlesItem)
-    }
 
     companion object {
         private val differCallback = object : DiffUtil.ItemCallback<ArticlesItem>() {
@@ -62,13 +58,13 @@ class NewsAdapter @Inject constructor() :
                 root.setOnClickListener {
                     val position = absoluteAdapterPosition
                     val newsItem = getItem(position)
-                    newsItem?.url?.let { it1 -> listener?.onCardClick(it1) }
+                    newsItem?.url?.let { it1 -> onCardClick(it1) }
                 }
                 ivSaveArticle.setOnClickListener {
                     val position = absoluteAdapterPosition
                     val newsItem = getItem(position)
                     if (newsItem != null) {
-                        listener?.onSaveButton(newsItem)
+                        onSaveButton(newsItem)
                         ivSaveArticle.setImageResource(R.drawable.ic_saved)
                     }
                 }
@@ -77,8 +73,7 @@ class NewsAdapter @Inject constructor() :
                     val position = absoluteAdapterPosition
                     val newsItem = getItem(position)
                     if (newsItem != null) {
-                        listener?.onShareButton(newsItem)
-
+                        onShareButton(newsItem)
                     }
                 }
             }
